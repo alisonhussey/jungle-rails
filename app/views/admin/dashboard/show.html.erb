@@ -1,2 +1,18 @@
-<h1>Admin::Dashboard#show</h1>
-<p>Find me in app/views/admin/dashboard/show.html.erb</p>
+<h1>Welcome to the Admin Dashboard</h1>
+<h4>Enjoy these cool stats:</h4>
+
+<p>How many products are in the database: <%= @products_count %>
+<br>
+<h5>Products:</h5>
+<%= link_to 'Products',  [:admin, :products] %>
+</p>
+
+<p>How many categories are in the database: <%= @product_categories_count %>
+<br>
+
+<h5>Categories:</h5>
+<%= link_to 'Apparel',  Category.find_by(id: 1) %>
+<%= link_to 'Electronics',  Category.find_by(id: 2) %>
+<%= link_to 'Furniture',  Category.find_by(id: 3) %>
+
+</p>
