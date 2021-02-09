@@ -45,7 +45,29 @@ RSpec.describe User, type: :model do
       expect(@user).to_not be_valid
       expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
     end
+  end
+
+  describe '.authenticate_with_credentials' do
+    it "should be able to log back in with email and password" do
+      @user = User.new(first_name: "Alison", last_name: "Hussey", email: "alisonhussey@gmail.com", password: "password", password_confirmation: "password")
+      @user.save!
+      next_sign_in = User.authenticate_with_credentials("alisonhussey@gmail.com", "password")
+      expect(next_sign_in).to eq(@user)      
+    end
+
+    it "should not allow signin if email doesn't match" do
+      @user = User.new(first_name: "Alison", last_name: "Hussey", email: "alisonhussey@gmail.com", password: "password", password_confirmation: "password")
+      @user.save!
+      next_sign_in = User.authenticate_with_credentials("alison_hussey@gmail.com", "password")
+      expect(next_sign_in).to_not eq(@user)
+    end
+
+    
+
+
+    
 
 
   end
+
 end
