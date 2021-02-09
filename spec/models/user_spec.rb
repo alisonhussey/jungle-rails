@@ -51,23 +51,25 @@ RSpec.describe User, type: :model do
     it "should be able to log back in with email and password" do
       @user = User.new(first_name: "Alison", last_name: "Hussey", email: "alisonhussey@gmail.com", password: "password", password_confirmation: "password")
       @user.save!
-      next_sign_in = User.authenticate_with_credentials("alisonhussey@gmail.com", "password")
-      expect(next_sign_in).to eq(@user)      
+      expect(User.authenticate_with_credentials("alisonhussey@gmail.com", "password")).to be_present    
     end
-
+    
     it "should not allow signin if email doesn't match" do
       @user = User.new(first_name: "Alison", last_name: "Hussey", email: "alisonhussey@gmail.com", password: "password", password_confirmation: "password")
       @user.save!
-      next_sign_in = User.authenticate_with_credentials("alison_hussey@gmail.com", "password")
-      expect(next_sign_in).to_not eq(@user)
+      expect(User.authenticate_with_credentials("alison_hussey@gamil.com", "password")).to_not be_present
     end
 
-    
+    it "should allow a user to sign in with extra spaces before/after email" do
+      @user = User.new(first_name: "Alison", last_name: "Hussey", email: "alisonhussey@gmail.com", password: "password", password_confirmation: "password")
+      @user.save!
+      expect(User.authenticate_with_credentials("  alisonhussey@gmail.com  ", "password")).to be_present
+    end
 
-
-    
-
-
+    it "should allow a user to sign in with the wrong case used" do
+      @user = User.new(first_name: "Alison", last_name: "Hussey", email: "alisonhussey@gmail.com", password: "password", password_confirmation: "password")
+      @user.save!
+      expect(User.authenticate_with_credentials("  ALISONhussey@gmail.com  ", "password")).to be_present
+    end
   end
-
 end
